@@ -1,0 +1,38 @@
+.loading_main {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  .loading_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loading_text {
+    font-size: 16px;
+  }
+
+  .loading_animation {
+    width: 260px;
+    height: 20px;
+    margin-bottom: 20px;
+    background: linear-gradient(#000 0 0) 0/0% no-repeat #ddd;
+    mask: linear-gradient(90deg, #000 70%, #0000 0) 0/20%;
+    animation: loading 2s infinite steps(6);
+  }
+}
+
+@keyframes loading {
+  100% {
+    background-size: 120%;
+  }
+}

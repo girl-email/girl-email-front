@@ -1,8 +1,8 @@
-import axios from 'axios'
-import { checkUrl } from '@/utils/utils'
-import { message } from 'antd'
-import { ResType } from '@/types/http'
-import { resolve } from 'path'
+import axios from 'axios';
+import { checkUrl } from '@/utils/utils';
+import { message } from 'antd';
+import { ResType } from '@/types/http';
+import { resolve } from 'path';
 
 /*
  * 基础配置
@@ -11,10 +11,10 @@ const instance = axios.create({
   baseURL: checkUrl(),
   withCredentials: false,
   timeout: 50000
-})
+});
 
 instance.defaults.headers.post['Content-Type'] =
-    'application/x-www-form-urlencoded'
+    'application/x-www-form-urlencoded';
 /**
  * 请求失败后的错误统一处理
  * @param {Number} status 请求失败的状态码
@@ -34,8 +34,8 @@ instance.defaults.headers.post['Content-Type'] =
  *       default: message = '异常问题，请联系管理员！'; break
  */
 const errorHandle = (status: number, msg: string) => {
-  message.error(msg)
-}
+  message.error(msg);
+};
 /*
  * 请求拦截
  * 每次发送请求之前判断localStorage中是否存在token
@@ -46,12 +46,12 @@ instance.interceptors.request.use(
   (request) => {
     // request.headers["MWQ_ACCESS_TOKEN"] =
     //     localStorage.getItem("MWQ_ACCESS_TOKEN");
-    return request
+    return request;
   },
   async function (error) {
-    return await Promise.reject(error)
+    return await Promise.reject(error);
   }
-)
+);
 /*
  * 响应拦截
  * 请求成功的(status === 200)的直接返回，非200的异常处理走errorHandle
@@ -60,30 +60,30 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   async function (res) {
     if (res.status === 200) {
-      return await Promise.resolve(res.data)
+      return await Promise.resolve(res.data);
     } else {
-      return await Promise.reject(res)
+      return await Promise.reject(res);
     }
   },
   function (res) {
     // 请求已发出，但是不在2xx的范围
     if (res && res.response) {
-      let msg = '系统异常'
+      let msg = '系统异常';
       if (res.data && res.data.message) {
-        msg = res.data.message
+        msg = res.data.message;
       }
-      errorHandle(res.response.status, msg)
-      return Promise.reject(res)
+      errorHandle(res.response.status, msg);
+      return Promise.reject(res);
     } else {
       // 处理其他的情况
       if (!window.navigator.onLine) {
         // todo..
       } else {
-        return Promise.reject(res)
+        return Promise.reject(res);
       }
     }
   }
-)
+);
 /*
  * export default instance;
  * 1. 如果是get请求  需要使用params来传递data  ?a=10&c=10
@@ -100,7 +100,7 @@ export default async <T>(url: string, method: string, data: any): Promise<ResTyp
       method,
       [method.toLowerCase() === 'get' ? 'params' : 'data']: data
     }).then((res: any) => {
-      resole(res)
-    })
-  })
-}
+      resole(res);
+    });
+  });
+};

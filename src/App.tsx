@@ -1,12 +1,15 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense } from 'react';
 import './App.less';
 import BlogRouter from '@/router';
+import LoadingPage from './components/Loading';
 
 function App() {
 
 	return (
 		<Fragment>
-			<BlogRouter />
+			<Suspense fallback={<LoadingPage />}>
+				<BlogRouter />
+			</Suspense>
 		</Fragment>
 	);
 }
