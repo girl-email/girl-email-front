@@ -47,7 +47,7 @@ export default defineConfig({
 		vitePluginImp({
 			libList: [
 				{
-					libName: "antd",
+					libName: 'antd',
 					style: (name) => `antd/es/${name}/style/index.js`,
 				},
 			],
