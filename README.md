@@ -49,7 +49,15 @@ pnpm run dev
 ### 打包项目
 ```shell
 pnpm run build
-```
+```  
+
+### 项目代码检查/自动修复  
+
+```js
+pnpm run lint  //检查less及js代码
+pnpm run lint:script  //检查js代码  
+pnpm run lint:style  //检查less代码  
+```  
 
 ### 工作流  
 
