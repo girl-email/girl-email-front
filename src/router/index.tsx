@@ -1,13 +1,28 @@
 import React, { lazy } from 'react';
-import { RouteObject, useRoutes } from 'react-router';
+import { RouteObject, useRoutes, Navigate } from 'react-router';
+import Layouts from '@/pages/layout';
 
 const Home = lazy(async () => await import('@/pages/home'));
 
 const routes: RouteObject[] = [
     {
         path: '/',
-        element: <Home />
-    }
+        element:  <Navigate to="/layout" />
+    },
+    {
+        path: '/layout',
+        element: <Layouts />,
+        children: [
+          {
+            index: true,
+            element: <Home />
+          },
+          {
+            path: 'home',
+            element: <Home />
+          }
+        ]
+      }
 ];
 
 const router = () => useRoutes(routes);
