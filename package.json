@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "lint": "npm run lint:script && npm run lint:style",
     "lint:script": "eslint --fix --ext .js,.jsx,.ts,.tsx --quiet ./",
-    "lint:style": "stylelint --fix --custom-syntax postcss-less \"src/**/*.{css,less}\"",
+    "lint:style": "stylelint --fix --customSyntax postcss-less \"src/**/*.less\"",
     "prepare": "husky install"
   },
   "dependencies": {

@@ -35,6 +35,10 @@ export default defineConfig({
 		},
 		preprocessorOptions: {
 			less: {
+				modifyVars: {
+					'primary-color': '#3073ff',
+					'border-radius-base': '4px'
+				},
 				javascriptEnabled: true,
 				additionalData: `@import "${variablePath}";`
 			},

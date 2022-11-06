@@ -1,0 +1,28 @@
+.left_menu {
+  animation: identifier 1s ease;
+
+  :global {
+    .ant-menu {
+      height: 100%;
+      background-color: red;
+
+      .ant-menu-item,
+      .ant-menu-submenu-title {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+@keyframes identifier {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
