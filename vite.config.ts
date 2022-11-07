@@ -12,6 +12,12 @@ const variablePath = normalizePath(path.resolve('./src/assets/style/variable.les
 export default defineConfig({
 	server: {
 		port: 5000,
+		proxy: {
+			'/api': {
+				target: 'http://girl-email.qinkeji.cn',
+				changeOrigin: true,
+			}
+		}
 	},
 	resolve: {
 		alias: {
