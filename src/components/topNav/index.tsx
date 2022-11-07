@@ -1,17 +1,30 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment, useState } from 'react';
+import LoginModel from '../LoginModel';
 import styles from './index.module.less';
 
 const TopNav: FC = () => {
- 
+  const [modelVisible, setModelVisible] = useState<boolean>(false);
+
+  const modelCancel = () => {
+    console.log(222);
+  };
+
+  const modelConfirm = () => {
+    console.log(11);
+  };
+
   return (
-        <div className={styles.top_menu}>
-          <span className={styles.log_span}>
-            girl-email
-          </span>
-          <div className={styles.right_box}>
-            <span>登陆</span>
-          </div>
+    <Fragment>
+      <div className={styles.top_menu}>
+        <span className={styles.log_span}>
+          girl-email
+        </span>
+        <div className={styles.right_box} onClick={() => setModelVisible(true)}>
+          <span>登陆</span>
         </div>
+      </div>
+      <LoginModel visible={modelVisible} handleCloseModal={modelCancel} handleLogin={modelConfirm} />
+    </Fragment>
   );
 };
 
