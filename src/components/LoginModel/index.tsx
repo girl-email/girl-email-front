@@ -1,5 +1,5 @@
-import React, { FC, Fragment, useEffect, useState } from 'react';
-import { Modal, Input, message as msg, Form, Button } from 'antd';
+import React, { FC, Fragment, useEffect, useRef, useState } from 'react';
+import { Modal, Input, message as msg, Form, Button, FormInstance } from 'antd';
 import styles from './index.module.less';
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
 
 const LoginModel: FC<Props> = ({ visible }: Props) => {
   let TIMER: any = null;
+  const formRef = useRef<FormInstance<any>>(null);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('登陆');
   const [okText, setOkText] = useState<string>('确定');
@@ -21,7 +22,13 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
 
   const handleOk = async () => {
     console.log(123);
-
+    formRef.current!.validateFields(['loginEmail', 'loginPassword']).then(res => {
+      console.log(res);
+      
+    }).catch(err => {
+      console.log(err);
+      
+    });
   };
 
   const handleCancel = () => {
@@ -39,7 +46,7 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
     TIMER = setInterval(() => {
       setBtnText(`${s}秒之后重新发送`);
       s--;
-      if(s === 0) {
+      if (s === 0) {
         clearInterval(TIMER);
         setBtnText('发送验证码');
       }
@@ -51,6 +58,7 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
       <Fragment>
         <Form
           name="login"
+          ref={formRef}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
@@ -58,12 +66,14 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
         >
           <Form.Item
             label="邮箱"
+            name='loginEmail'
             rules={[{ required: true, message: '请输入邮箱!' }]}
           >
             <Input placeholder="请输入邮箱" value={username} onChange={(e) => setUsername(e.target.value)} />
           </Form.Item>
           <Form.Item
             label="密码"
+            name='loginPassword'
             rules={[{ required: true, message: '请输入密码!' }]}
           >
             <Input.Password placeholder="请输入密码" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -81,6 +91,7 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
       <Fragment>
         <Form
           name="register"
+          ref={formRef}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
@@ -88,22 +99,27 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
         >
           <Form.Item
             label="邮箱"
+            name='userEmail'
             rules={[{ required: true, message: '请输入邮箱!' }, { type: 'email', message: '请输入正确的邮箱格式!' }]}
           >
             <Input placeholder="请输入注册邮箱" value={username} onChange={(e) => setUsername(e.target.value)} />
           </Form.Item>
           <Form.Item
             label="密码"
+            name='password'
             rules={[{ required: true, message: '请输入密码!' }]}
           >
             <Input.Password placeholder="请输入密码" value={password} onChange={(e) => setPassword(e.target.value)} />
           </Form.Item>
           <Form.Item
             label="验证码"
+            name='authCode'
             rules={[{ required: true, message: '请输入验证码!' }]}
           >
-            <Input className='auth_input' placeholder="请输入验证码" value={auth} onChange={(e) => setAuth(e.target.value)} />
-            <Button disabled={btnText != '发送验证码'} onClick={() => handleSendAuthCode()}>{btnText}</Button>
+            <Fragment>
+              <Input className='auth_input' placeholder="请输入验证码" value={auth} onChange={(e) => setAuth(e.target.value)} />
+              <Button disabled={btnText != '发送验证码'} onClick={() => handleSendAuthCode()}>{btnText}</Button>
+            </Fragment>
           </Form.Item>
         </Form>
       </Fragment>
