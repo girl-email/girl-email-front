@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useRef, useState } from 'react';
 import { Modal, Input, message as msg, Form, Button, FormInstance } from 'antd';
-import { USER_LOGIN, USER_REGISTER, SEND_REGISTER_EMAIL } from '@/api/api';
+import { USER_LOGIN, USER_REGISTER, SEND_REGISTER_EMAIL } from '@/api/api'; 
 import styles from './index.module.less';
 
 interface Props {
