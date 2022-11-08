@@ -1,5 +1,6 @@
-import React, { FC, Fragment, useEffect, useRef, useState } from 'react';
+import React, { FC, Fragment, useRef, useState } from 'react';
 import { Modal, Input, message as msg, Form, Button, FormInstance } from 'antd';
+import { USER_LOGIN, USER_REGISTER } from '@/api/api';
 import styles from './index.module.less';
 
 interface Props {
@@ -20,27 +21,52 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [btnText, setBtnText] = useState<string>('发送验证码');
 
+  const queryRegister = async () => {
+    const {code, data} = await USER_REGISTER({
+      code: Number(auth),
+      email: username,
+      password: password
+    });
+    if(code === 1) {
+      console.log(data);
+    }
+  };
+
+  /**
+   * handle click ok event
+   */
   const handleOk = async () => {
     console.log(123);
-    formRef.current!.validateFields(['loginEmail', 'loginPassword']).then(res => {
+    const checkArr = isRegister ? ['userEmail', 'password', 'authCode'] : ['loginEmail', 'loginPassword'];
+    formRef.current!.validateFields(checkArr).then(res => {
       console.log(res);
-      
+      queryRegister();
+
     }).catch(err => {
       console.log(err);
-      
+
     });
   };
 
+  /**
+   * handle click cancel event
+   */
   const handleCancel = () => {
     console.log(123);
   };
 
+  /**
+   * handle click register event
+   */
   const handleRegister = () => {
     setOkText('注册');
     setTitle('注册');
     setIsRegister(true);
   };
 
+  /**
+   * handle send auth code event
+   */
   const handleSendAuthCode = () => {
     let s = 60;
     TIMER = setInterval(() => {
@@ -53,6 +79,10 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
     }, 1000);
   };
 
+  /**
+   * render login model
+   * @returns html
+   */
   const renderLogin = () => {
     return (
       <Fragment>
@@ -86,6 +116,10 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
     );
   };
 
+  /**
+   * render register model
+   * @returns html
+   */
   const renderRegister = () => {
     return (
       <Fragment>
