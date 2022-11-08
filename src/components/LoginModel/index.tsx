@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useRef, useState } from 'react';
 import { Modal, Input, message as msg, Form, Button, FormInstance } from 'antd';
-import { USER_LOGIN, USER_REGISTER } from '@/api/api';
+import { USER_LOGIN, USER_REGISTER, SEND_REGISTER_EMAIL } from '@/api/api';
 import styles from './index.module.less';
 
 interface Props {
@@ -22,13 +22,31 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
   const [btnText, setBtnText] = useState<string>('发送验证码');
 
   const queryRegister = async () => {
-    const {code, data} = await USER_REGISTER({
+    const { code, data } = await USER_REGISTER({
       code: Number(auth),
       email: username,
       password: password
     });
-    if(code === 1) {
+    if (code === 1) {
       console.log(data);
+    }
+  };
+
+  const sendAuthCode = async () => {
+    const { code } = await SEND_REGISTER_EMAIL({
+      email: username
+    });
+    if (code === 1000) {
+      msg.success('发送成功');
+      let s = 60;
+      TIMER = setInterval(() => {
+        setBtnText(`${s}秒之后重新发送`);
+        s--;
+        if (s === 0) {
+          clearInterval(TIMER);
+          setBtnText('发送验证码');
+        }
+      }, 1000);
     }
   };
 
@@ -68,15 +86,11 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
    * handle send auth code event
    */
   const handleSendAuthCode = () => {
-    let s = 60;
-    TIMER = setInterval(() => {
-      setBtnText(`${s}秒之后重新发送`);
-      s--;
-      if (s === 0) {
-        clearInterval(TIMER);
-        setBtnText('发送验证码');
-      }
-    }, 1000);
+    formRef.current!.validateFields(['userEmail']).then(res => {
+      sendAuthCode();
+    }).catch(err => {
+      console.log(err);
+    });
   };
 
   /**

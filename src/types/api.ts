@@ -34,3 +34,7 @@ export interface RegisterRes {
     passwordV: number,
     status: number
 }
+
+export interface SendRegisterEmailReq {
+    email: string
+}
