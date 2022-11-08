@@ -54,15 +54,13 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
    * handle click ok event
    */
   const handleOk = async () => {
-    console.log(123);
+    console.log(auth);
     const checkArr = isRegister ? ['userEmail', 'password', 'authCode'] : ['loginEmail', 'loginPassword'];
     formRef.current!.validateFields(checkArr).then(res => {
       console.log(res);
       queryRegister();
-
     }).catch(err => {
       console.log(err);
-
     });
   };
 
