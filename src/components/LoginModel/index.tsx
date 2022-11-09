@@ -27,8 +27,8 @@ const LoginModel: FC<Props> = ({ visible, handleCloseModal, handleLogin }: Props
       email: username,
       password: password
     });
-    if (code === 1) {
-      console.log(data);
+    if (code === 1000) {
+      sessionStorage.setItem('GIRL_EMAIL_TOKEN', data.token);
       setConfirmLoading(false);
       handleLogin();
     } else {

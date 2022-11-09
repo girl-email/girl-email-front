@@ -44,8 +44,8 @@ const errorHandle = (status: number, msg: string) => {
  * */
 instance.interceptors.request.use(
   (request) => {
-    // request.headers["MWQ_ACCESS_TOKEN"] =
-    //     localStorage.getItem("MWQ_ACCESS_TOKEN");
+    request.headers!['Authorization'] =
+        sessionStorage.getItem('GIRL_EMAIL_TOKEN');
     return request;
   },
   async function (error) {
