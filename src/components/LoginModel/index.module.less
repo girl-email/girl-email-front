@@ -13,8 +13,11 @@
     }
 
     .ant-form-item-control-input-content {
-      display: flex;
-      justify-content: space-between;
+      .auth_code {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
     }
 
     .auth_input {
@@ -48,6 +51,20 @@
     margin-top: 8px;
 
     .register_btn {
+      margin-left: auto;
+      color: @primary-color;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .model_bottom {
+    display: flex;
+
+    .back_login_btn {
       margin-left: auto;
       color: @primary-color;
       cursor: pointer;

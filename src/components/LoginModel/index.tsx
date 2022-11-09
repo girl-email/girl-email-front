@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useRef, useState } from 'react';
 import { Modal, Input, message as msg, Form, Button, FormInstance } from 'antd';
-import { USER_LOGIN, USER_REGISTER, SEND_REGISTER_EMAIL } from '@/api/api'; 
+import { USER_LOGIN, USER_REGISTER, SEND_REGISTER_EMAIL } from '@/api/api';
 import styles from './index.module.less';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   handleLogin: () => void
 }
 
-const LoginModel: FC<Props> = ({ visible }: Props) => {
+const LoginModel: FC<Props> = ({ visible, handleCloseModal, handleLogin }: Props) => {
   let TIMER: any = null;
   const formRef = useRef<FormInstance<any>>(null);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
@@ -21,19 +21,44 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [btnText, setBtnText] = useState<string>('发送验证码');
 
-  const queryRegister = async () => {
-    const { code, data } = await USER_REGISTER({
-      code: Number(auth),
+  const handleLoginEvent = async () => {
+    setConfirmLoading(true);
+    const { code, data, message } = await USER_LOGIN({
       email: username,
       password: password
     });
     if (code === 1) {
       console.log(data);
+      setConfirmLoading(false);
+      handleLogin();
+    } else {
+      msg.error(message);
     }
   };
 
+  /**
+   * handle register event
+   */
+  const queryRegister = async () => {
+    setConfirmLoading(true);
+    const { code, message } = await USER_REGISTER({
+      code: auth,
+      email: username,
+      password: password
+    });
+    if (code === 1000) {
+      msg.success('注册成功');
+      handleLoginEvent();
+    } else {
+      msg.error(message);
+    }
+  };
+
+  /**
+   * handle send auth code
+   */
   const sendAuthCode = async () => {
-    const { code } = await SEND_REGISTER_EMAIL({
+    const { code, message } = await SEND_REGISTER_EMAIL({
       email: username
     });
     if (code === 1000) {
@@ -47,6 +72,8 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
           setBtnText('发送验证码');
         }
       }, 1000);
+    } else {
+      msg.error(message);
     }
   };
 
@@ -56,9 +83,12 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
   const handleOk = async () => {
     console.log(auth);
     const checkArr = isRegister ? ['userEmail', 'password', 'authCode'] : ['loginEmail', 'loginPassword'];
-    formRef.current!.validateFields(checkArr).then(res => {
-      console.log(res);
-      queryRegister();
+    formRef.current!.validateFields(checkArr).then(() => {
+      if (isRegister) {
+        queryRegister();
+      } else {
+        handleLoginEvent();
+      }
     }).catch(err => {
       console.log(err);
     });
@@ -68,7 +98,7 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
    * handle click cancel event
    */
   const handleCancel = () => {
-    console.log(123);
+    handleCloseModal();
   };
 
   /**
@@ -80,11 +110,17 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
     setIsRegister(true);
   };
 
+  const handleGoBackLogin = () => {
+    setOkText('登陆');
+    setTitle('登陆');
+    setIsRegister(false);
+  };
+
   /**
    * handle send auth code event
    */
   const handleSendAuthCode = () => {
-    formRef.current!.validateFields(['userEmail']).then(res => {
+    formRef.current!.validateFields(['userEmail']).then(() => {
       sendAuthCode();
     }).catch(err => {
       console.log(err);
@@ -162,12 +198,15 @@ const LoginModel: FC<Props> = ({ visible }: Props) => {
             name='authCode'
             rules={[{ required: true, message: '请输入验证码!' }]}
           >
-            <Fragment>
+            <div className='auth_code'>
               <Input className='auth_input' placeholder="请输入验证码" value={auth} onChange={(e) => setAuth(e.target.value)} />
               <Button disabled={btnText != '发送验证码'} onClick={() => handleSendAuthCode()}>{btnText}</Button>
-            </Fragment>
+            </div>
           </Form.Item>
         </Form>
+        <div className={styles.model_bottom}>
+          <span className={styles.back_login_btn} onClick={() => handleGoBackLogin()}>返回登陆</span>
+        </div>
       </Fragment>
     );
   };

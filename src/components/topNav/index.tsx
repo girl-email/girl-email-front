@@ -6,11 +6,11 @@ const TopNav: FC = () => {
   const [modelVisible, setModelVisible] = useState<boolean>(false);
 
   const modelCancel = () => {
-    console.log(222);
+    setModelVisible(false);
   };
 
   const modelConfirm = () => {
-    console.log(11);
+    setModelVisible(false);
   };
 
   return (

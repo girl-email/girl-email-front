@@ -12,7 +12,7 @@ export interface LoginRes {
 }
 
 export interface RegisterReq {
-    code: number,
+    code: string,
     email: string,
     password: string
 }
