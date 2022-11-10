@@ -16,7 +16,7 @@ const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Pr
     };
 
     const handleCancel = () => {
-        console.log('ok');
+        handleCloseModal();
     };
 
     const renderModel = () => {

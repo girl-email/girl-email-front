@@ -22,7 +22,7 @@ const LeftMenu: FC = () => {
     };
 
     const handleModelCancel = () => {
-        console.log(321);
+        setVisible(false);
     };
 
     const navigate = useNavigate();
