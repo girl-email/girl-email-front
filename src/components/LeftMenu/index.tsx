@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router';
-import { Menu } from 'antd';
+import { Menu, Button } from 'antd';
 import './index.less';
 
 const LeftMenu: FC = () => {
     const items = [
         {
-            label: '发送邮件',
+            label: '配置列表',
             key: '/layout/home',
         },
         {
@@ -19,7 +19,10 @@ const LeftMenu: FC = () => {
 
     return (
         <div className='left_menu'>
-            <Menu style={{ width: '200px', height: '100%', padding: '0 12px' }} items={items} defaultSelectedKeys={['/layout/home']} onClick={(item) => navigate(item.key)} />
+            <Menu style={{ width: '200px', height: 'calc(100% - 50px)', padding: '0 12px' }} items={items} defaultSelectedKeys={['/layout/home']} onClick={(item) => navigate(item.key)} />
+            <div className='bottom-menu'>
+                <Button type='primary'>添加配置</Button>
+            </div>
         </div>
     );
 };

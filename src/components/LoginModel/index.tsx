@@ -29,8 +29,10 @@ const LoginModel: FC<Props> = ({ visible, handleCloseModal, handleLogin }: Props
     });
     if (code === 1000) {
       sessionStorage.setItem('GIRL_EMAIL_TOKEN', data.token);
+      sessionStorage.setItem('GIRL_EMAIL_NAME', username);
       setConfirmLoading(false);
       handleLogin();
+      msg.success('登陆成功');
     } else {
       msg.error(message);
     }

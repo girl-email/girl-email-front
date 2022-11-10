@@ -13,15 +13,28 @@ const TopNav: FC = () => {
     setModelVisible(false);
   };
 
+  const renderLoginBtn = () => {
+    return (
+      <div className={styles.right_box} onClick={() => setModelVisible(true)}>
+        <span>登陆</span>
+      </div>
+    );
+  };
+
+  const renderUser = () => {
+    const name = sessionStorage.getItem('GIRL_EMAIL_NAME');
+    return (
+      <span className={styles.user_name}>{name}</span>
+    );
+  };
+
   return (
     <Fragment>
       <div className={styles.top_menu}>
         <span className={styles.log_span}>
           girl-email
         </span>
-        <div className={styles.right_box} onClick={() => setModelVisible(true)}>
-          <span>登陆</span>
-        </div>
+        {sessionStorage.getItem('GIRL_EMAIL_TOKEN') ? renderUser() : renderLoginBtn()}
       </div>
       <LoginModel visible={modelVisible} handleCloseModal={modelCancel} handleLogin={modelConfirm} />
     </Fragment>
