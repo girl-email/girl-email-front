@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState } from 'react';
+import React, { FC, Fragment, useState, useRef } from 'react';
 import { Modal, Input, message as msg, Form, Button, FormInstance } from 'antd';
 import styles from './index.module.less';
 
@@ -6,17 +6,71 @@ interface Props {
     visible: boolean
     handleCloseModal: () => void
     handleConfirm: () => void
-  }
+}
 
 const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Props) => {
+    const formRef = useRef<FormInstance<any>>(null);
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
 
     const handleOk = () => {
-        console.log('ok');
+        formRef.current!.validateFields([]).then(res => {
+            console.log(res);
+          }).catch(err => {
+            console.log(err);
+          });
     };
 
     const handleCancel = () => {
         handleCloseModal();
+    };
+
+    const renderConfigModel = () => {
+        return (
+            <Form
+                name="login"
+                ref={formRef}
+                labelCol={{ span: 6 }}
+                wrapperCol={{ span: 16 }}
+                initialValues={{ remember: true }}
+                autoComplete="off"
+            >
+                <Form.Item
+                    label="接收人邮箱"
+                    name='receiveEmail'
+                    rules={[{ required: true, message: '请输入接收人邮箱!' }]}
+                >
+                    <Input placeholder="请输入接收人邮箱" />
+                </Form.Item>
+                <Form.Item
+                    label="称呼"
+                    name='call'
+                    rules={[{ required: true, message: '请输入称呼!' }]}
+                >
+                    <Input placeholder="请输入称呼" />
+                </Form.Item>
+                <Form.Item
+                    label="纪念日"
+                    name='memorial'
+                    rules={[{ required: true, message: '请输入纪念日!' }]}
+                >
+                    <Input placeholder="请输入纪念日" />
+                </Form.Item>
+                <Form.Item
+                    label="对方所在城市"
+                    name='city'
+                    rules={[{ required: true, message: '请输入对方所在城市!' }]}
+                >
+                    <Input placeholder="请输入对方所在城市" />
+                </Form.Item>
+                <Form.Item
+                    label="邮件标题"
+                    name='title'
+                    rules={[{ required: true, message: '请输入邮件标题!' }]}
+                >
+                    <Input placeholder="请输入邮件标题" />
+                </Form.Item>
+            </Form>
+        );
     };
 
     const renderModel = () => {
@@ -30,6 +84,7 @@ const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Pr
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
             >
+                {renderConfigModel()}
             </Modal>
         );
     };
