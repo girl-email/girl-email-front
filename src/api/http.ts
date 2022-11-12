@@ -2,7 +2,6 @@ import axios from 'axios';
 import { checkUrl } from '@/utils/utils';
 import { message } from 'antd';
 import { ResType } from '@/types/http';
-import { resolve } from 'path';
 
 /*
  * 基础配置

@@ -1,5 +1,4 @@
 export const checkUrl = () => {
-  const localUrl = '';
   let baseURL = '';
   const isMock =
         location.host.includes('localhost') ||

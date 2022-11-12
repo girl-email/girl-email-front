@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useState, useRef } from 'react';
-import { Modal, Input, message as msg, Form, Button, FormInstance } from 'antd';
+import { Modal, Input, message as msg, Form, FormInstance, DatePicker } from 'antd';
 import styles from './index.module.less';
 
 interface Props {
@@ -10,10 +10,11 @@ interface Props {
 
 const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Props) => {
     const formRef = useRef<FormInstance<any>>(null);
+    const checkList = ['receiveEmail', 'call', 'memorial', 'city', 'title'];
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
 
     const handleOk = () => {
-        formRef.current!.validateFields([]).then(res => {
+        formRef.current!.validateFields(checkList).then(res => {
             console.log(res);
           }).catch(err => {
             console.log(err);
@@ -27,7 +28,7 @@ const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Pr
     const renderConfigModel = () => {
         return (
             <Form
-                name="login"
+                name="config"
                 ref={formRef}
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span: 16 }}
@@ -37,7 +38,7 @@ const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Pr
                 <Form.Item
                     label="接收人邮箱"
                     name='receiveEmail'
-                    rules={[{ required: true, message: '请输入接收人邮箱!' }]}
+                    rules={[{ required: true, message: '请输入接收人邮箱!' }, { type: 'email', message: '请输入正确的邮箱格式!' }]}
                 >
                     <Input placeholder="请输入接收人邮箱" />
                 </Form.Item>
@@ -53,7 +54,7 @@ const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Pr
                     name='memorial'
                     rules={[{ required: true, message: '请输入纪念日!' }]}
                 >
-                    <Input placeholder="请输入纪念日" />
+                    <DatePicker />
                 </Form.Item>
                 <Form.Item
                     label="对方所在城市"
@@ -80,6 +81,8 @@ const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Pr
                 className={styles.custom_login_modal}
                 open={visible}
                 okText='确定'
+                destroyOnClose={true}
+                maskClosable={false}
                 onOk={handleOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
