@@ -3,6 +3,7 @@ import { RouteObject, useRoutes, Navigate } from 'react-router';
 import Layouts from '@/pages/layout';
 
 const Home = lazy(async () => await import('@/pages/home'));
+const Task = lazy(async () => await import('@/pages/task'));
 
 const routes: RouteObject[] = [
     {
@@ -20,6 +21,10 @@ const routes: RouteObject[] = [
           {
             path: 'home',
             element: <Home />
+          },
+          {
+            path: 'task',
+            element: <Task />
           }
         ]
       }
