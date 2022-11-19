@@ -52,3 +52,40 @@ export interface sendTaskConfigReq {
 export interface sendTaskConfigRes {
     id: number
 }
+
+export interface taskConfigListRes {
+    list: Array<{
+        id: number;
+        createTime: string;
+        updateTime: string;
+        email_subject: string;
+        startDay: string;
+        from_user: string;
+        from_email: string;
+        to_user: string;
+        to_email: string;
+        city: string;
+        email_template: number;
+        user_id: number
+    }>;
+    pagination: {
+        page: number;
+        size: number;
+        total: number
+    }
+}
+
+export interface updateTaskConfig {
+    id: number;
+    createTime: string;
+    updateTime: string;
+    email_subject: string;
+    startDay: string;
+    from_user: string;
+    from_email: string;
+    to_user: string;
+    to_email: string;
+    city: string;
+    email_template: number;
+    user_id: number
+}
