@@ -1,11 +1,21 @@
 import React, { FC, Fragment, useState, useRef } from 'react';
 import { Modal, Input, message as msg, Form, FormInstance, DatePicker } from 'antd';
+import { SEND_TASK_CONFIG } from '@/api/api';
 import styles from './index.module.less';
 
 interface Props {
     visible: boolean
     handleCloseModal: () => void
     handleConfirm: () => void
+}
+
+interface Res {
+    sendName: string
+    city: string
+    call: string
+    receiveEmail: string
+    memorial: string
+    title: string
 }
 
 const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Props) => {
@@ -16,9 +26,30 @@ const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Pr
     const handleOk = () => {
         formRef.current!.validateFields(checkList).then(res => {
             console.log(res);
-          }).catch(err => {
+            handleSendTaskCfg(res);
+        }).catch(err => {
             console.log(err);
-          });
+        });
+    };
+
+    const handleSendTaskCfg = async (res: Res) => {
+        setConfirmLoading(true);
+        const { code, message } = await SEND_TASK_CONFIG({
+            from_user: res.sendName,
+            from_email: 'xiaobo21@163.com',
+            city: res.city,
+            to_user: res.call,
+            to_email: res.receiveEmail,
+            startDay: res.memorial,
+            email_subject: res.title
+        });
+        if(code === 1000) {
+            setConfirmLoading(false);
+            msg.success('配置创建成功');
+        } else {
+            setConfirmLoading(false);
+            msg.error(message);
+        }
     };
 
     const handleCancel = () => {
@@ -35,6 +66,13 @@ const ConfigModel: FC<Props> = ({ visible, handleCloseModal, handleConfirm }: Pr
                 initialValues={{ remember: true }}
                 autoComplete="off"
             >
+                <Form.Item
+                    label="发送人"
+                    name='sendName'
+                    rules={[{ required: true, message: '请输入发送人!' }]}
+                >
+                    <Input placeholder="请输入发送人" />
+                </Form.Item>
                 <Form.Item
                     label="接收人邮箱"
                     name='receiveEmail'

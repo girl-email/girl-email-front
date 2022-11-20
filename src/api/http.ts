@@ -68,8 +68,10 @@ instance.interceptors.response.use(
     // 请求已发出，但是不在2xx的范围
     if (res && res.response) {
       let msg = '系统异常';
-      if (res.data && res.data.message) {
-        msg = res.data.message;
+      console.log(res);
+      
+      if (res.response && res.response.data) {
+        msg = res.response.data.message;
       }
       errorHandle(res.response.status, msg);
       return Promise.reject(res);
