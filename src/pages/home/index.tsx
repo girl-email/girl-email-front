@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
-import { Table } from 'antd';
+import React, { Fragment, useState } from 'react';
+import { Table, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { TASK_CONFIG_LIST } from '@/api/api';
 import styles from './index.module.less';
 
 interface updateTaskConfig {
@@ -85,7 +86,7 @@ const columns: ColumnsType<updateTaskConfig> = [
         ellipsis: true,
     },
     {
-        title: '收件人地址',
+        title: '收件人城市',
         dataIndex: 'city',
         render: text => <p>{text}</p>,
         width: 75,
@@ -112,16 +113,49 @@ const columns: ColumnsType<updateTaskConfig> = [
         width: 75,
         ellipsis: true,
     },
+    {
+        title: '操作',
+        render: (_, record) => (
+            <Space size="middle">
+                <a>修改</a>
+                <a>删除</a>
+            </Space>
+        ),
+        width: 75,
+    },
 ];
 
 const { Column } = Table;
 
 const Home = () => {
+    const [pageSize, setPageSize] = useState<number>(10);
+    const [totalItem, setTotalItem] = useState<number>(0);
+    const [curPage, setCurPage] = useState<number>(1);
 
+    const queryList = async () => {
+        const {code, data} = await TASK_CONFIG_LIST({});
+        if(code === 1000) {
+            console.log(data);
+        }
+    };
+
+    /**
+     * handle change page event
+     * @param page current page
+     * @param pageSize page size
+     */
+    const handlePaging = (page: number, pageSize: number) => {
+        setCurPage(page);
+        setPageSize(pageSize);
+    };
+
+    /**
+     * render table
+     * @returns table html
+     */
     const renderTaskCard = () => {
         return (
-            <Table columns={columns} dataSource={data} rowKey={record => record.id}>
-            </Table>
+            <Table columns={columns} dataSource={data} rowKey={record => record.id} pagination={{ showQuickJumper: true, pageSize: pageSize, total: totalItem, current: curPage, showTotal: () => `共 ${totalItem} 条数据`, pageSizeOptions: ['10', '20', '50', '100'], onChange: handlePaging }} />
         );
     };
 

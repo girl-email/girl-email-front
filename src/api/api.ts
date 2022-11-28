@@ -18,7 +18,7 @@ export const SEND_TASK_CONFIG = async (params: h.sendTaskConfigReq) => {
     return await http<h.sendTaskConfigRes>('/api/admin/email/conf/add', 'post', params);
 };
 
-export const TASK_CONFIG_LIST = async (params: null) => {
+export const TASK_CONFIG_LIST = async (params: object) => {
     return await http<h.taskConfigListRes>('/api/admin/email/conf/page', 'post', params);
 };
 
